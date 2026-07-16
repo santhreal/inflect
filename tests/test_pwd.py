@@ -228,12 +228,24 @@ class Test:
             ("  cow   ", ("  ", "cow", "   ")),
             ("", ("", "", "")),
             ("bottle of beer", ("", "bottle of beer", "")),
-            # spaces give weird results
-            # (' '),('', ' ', '')),
-            # ('  '),(' ', ' ', '')),
-            # ('   '),('  ', ' ', '')),
+            # whitespace-only input has no word, same as the empty string
+            (" ", ("", "", "")),
+            ("  ", ("", "", "")),
+            ("   ", ("", "", "")),
+            ("\t", ("", "", "")),
         ):
             assert p.partition_word(txt) == part
+
+    def test_plural_whitespace_only(self):
+        # A whitespace-only string has no word to inflect and used to raise
+        # IndexError; it should be returned unchanged.
+        p = inflect.engine()
+        for txt in (" ", "  ", "   ", "\t", "\n\t "):
+            assert p.plural(txt) == txt
+            assert p.plural_noun(txt) == txt
+            assert p.plural_verb(txt) == txt
+            assert p.plural_adj(txt) == txt
+            assert p.singular_noun(txt) == txt
 
     def test_pl(self):
         p = inflect.engine()

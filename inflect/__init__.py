@@ -2380,7 +2380,11 @@ class engine:
 
     def partition_word(self, text: str) -> Tuple[str, str, str]:
         mo = PARTITION_WORD.search(text)
-        if mo:
+        # A whitespace-only string matches with the middle group forced to a
+        # single space, which is truthy and slips past the callers' "no word"
+        # guard, later raising IndexError in Words(). Treat it as having no
+        # word, the same as the empty string.
+        if mo and mo.group(2).strip():
             return mo.group(1), mo.group(2), mo.group(3)
         else:
             return "", "", ""

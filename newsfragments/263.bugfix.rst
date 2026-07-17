@@ -1,0 +1,1 @@
+``Words`` no longer raises ``IndexError`` on whitespace-only input; ``first`` and ``last`` degrade to an empty string.

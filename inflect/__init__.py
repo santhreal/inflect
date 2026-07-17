@@ -3822,7 +3822,8 @@ class engine:
 
     @staticmethod
     def _get_sign(num):
-        return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[0], '')
+        # slice not index: a whitespace-only num strips to "" and has no [0].
+        return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[:1], '')
 
     @typechecked
     def number_to_words(  # noqa: C901

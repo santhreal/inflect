@@ -396,3 +396,18 @@ def test_issue_131():
     p = inflect.engine()
     for nth_word in inflect.nth_suff:
         assert p.number_to_words(nth_word) == "zero"
+
+
+def test_number_to_words_whitespace():
+    # A whitespace-only string is a valid Word (len >= 1) and used to raise a
+    # raw IndexError from _get_sign; it now degrades to "zero" like other
+    # non-numeric input (e.g. "abc").
+    p = inflect.engine()
+    assert p.number_to_words(" ") == "zero"
+    assert p.number_to_words("  ") == "zero"
+    assert p.number_to_words("\t") == "zero"
+    assert p.number_to_words("\n") == "zero"
+    assert p.number_to_words(" \t ") == "zero"
+    # a sign preceded by whitespace still resolves.
+    assert p.number_to_words("  -5") == "minus five"
+    assert p.number_to_words("  +3") == "plus three"

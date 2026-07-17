@@ -2045,8 +2045,9 @@ class Words(str):
     def __init__(self, orig) -> None:
         self.lowered = self.lower()
         self.split_ = self.split()
-        self.first = self.split_[0]
-        self.last = self.split_[-1]
+        # a whitespace-only string is a valid Word but splits to []; degrade first/last.
+        self.first = self.split_[0] if self.split_ else ""
+        self.last = self.split_[-1] if self.split_ else ""
 
 
 Falsish = Any  # ideally, falsish would only validate on bool(value) is False

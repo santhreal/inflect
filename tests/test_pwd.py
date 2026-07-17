@@ -502,6 +502,18 @@ class Test:
         p.defadj("my", "our|your")  # what's ours is yours
         assert p.compare("your", "our") == "p:p"
 
+    def test_compare_whitespace_only_degrades(self):
+        # Whitespace-only passes the Word guard (min_length=1) but splits to [].
+        p = inflect.engine()
+        assert p.compare(" ", "x") is False
+        assert p.compare("x", " ") is False
+        assert p.compare("  ", "\t") is False
+        assert p.compare_nouns(" ", "cats") is False
+        assert p.no("  ", 3) == " 3  S"
+        # equal words and normal words are unaffected.
+        assert p.compare(" ", " ") == "eq"
+        assert p.compare("cat", "cats") == "s:p"
+
     def test__pl_reg_plurals(self):
         p = inflect.engine()
         for pair, stems, end1, end2, ans in (

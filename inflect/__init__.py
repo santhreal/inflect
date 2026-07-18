@@ -3822,7 +3822,10 @@ class engine:
 
     @staticmethod
     def _get_sign(num):
-        return {'+': 'plus', '-': 'minus'}.get(num.lstrip()[0], '')
+        stripped = num.lstrip()
+        if not stripped:
+            return ''
+        return {'+': 'plus', '-': 'minus'}.get(stripped[0], '')
 
     @typechecked
     def number_to_words(  # noqa: C901

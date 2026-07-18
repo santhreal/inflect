@@ -2381,7 +2381,11 @@ class engine:
     def partition_word(self, text: str) -> Tuple[str, str, str]:
         mo = PARTITION_WORD.search(text)
         if mo:
-            return mo.group(1), mo.group(2), mo.group(3)
+            pre, word, post = mo.group(1), mo.group(2), mo.group(3)
+            # Whitespace-only middle matches (space/tab) must empty like newline-only.
+            if word.isspace():
+                return "", "", ""
+            return pre, word, post
         else:
             return "", "", ""
 
